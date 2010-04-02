@@ -30,14 +30,19 @@ function _callback(data){
 }
 
 function resolveFeature(feature){
-	var parts = feature.split("-"),
-		ns = parts[0], // The namespace of the feature, like "oo" in "oo" or "oo-declare or "oo-extend".
-		f = parts.length>1 ? parts[1] : null, // The exact feature if given, like for "oo-declare".
-		ret = [],
-		data = globals.profileData;
+	var parts = feature.split("-");
+	var ns = parts[0]; // The namespace of the feature, like "oo" in "oo" or "oo-declare or "oo-extend".
+	var f = parts.length>1 ? parts[1] : null; // The exact feature if given, like for "oo-declare".
+	var ret = [];
+	var data = globals.profileData;
 	if (f===null){
 		// If the feature is only "oo" then we use ALL files given inside "oo".
 		ret = data[ns];
+		for (var k in ret){
+			resolveDeps(ret[k], function(files){
+				ret = ret.concat(files);
+			});
+		}
 	} else {
 		// A features like "oo-declare" means we only want the features inside "oo"
 		// where the file is "*declare.*", if given of course.
@@ -56,9 +61,9 @@ function resolveFeature(feature){
 
 var _depsDataStack = [];
 function resolveDeps(file, onSuccess){
-	var parts = file.split("/"),
-		dir = parts[0],
-		f = parts[1];
+	var parts = file.split("/");
+	var dir = parts[0];
+	var f = parts[1];
 	_depsDataStack.push({directory:dir, file:f, onSuccess:onSuccess});
 	if (typeof globals.dependencyData[dir]!="undefined"){
 		_depsCallback(globals.dependencyData[dir]);
@@ -67,15 +72,16 @@ function resolveDeps(file, onSuccess){
 		try{
 			load("../src/" + dir + "/__deps__.js");
 		}catch(e){
-			print(e);
+			// The file may not exist, so skip it.
+			//print(e);
 		}
 	}
 }
 
 function _depsCallback(data){
-	var depsData = _depsDataStack.pop(),
-		dir = depsData.directory,
-		file = depsData.file;
+	var depsData = _depsDataStack.pop();
+	var dir = depsData.directory;
+	var file = depsData.file;
 	globals.dependencyData[dir] = data;
 
 	var ret = [];
