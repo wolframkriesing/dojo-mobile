@@ -1,32 +1,39 @@
-_callback({
+{
 	"base":[
 		"dojo.js"
 	],
 
 	"array":[
-		"array/_base.js"
+		"array/_default.js"
 	],
 	
 	"oo":[
-		"oo/_base.js",
+		"oo/_default.js",
 		"oo/delegate.js",
 		"oo/declare.js",
-		"oo/extend.js",
+		"oo/extend.js"
+	],
+	
+	"oo-declare":[
+		"oo/declare.js"
+	],
+	"oo-delegate":[
+		"oo/delegate.js"
 	],
 	
 	"lang":[
+		"lang/_default.js",
 		"lang/clone.js",
 		"lang/hitch.js",
 		"lang/is.js",
 		"lang/string.js",
 	],
 	
-	//"simple-fx":[
-	//	
-	//],
-	//
+	"simple-fx":[
+	],
+	
 	"fx":[
 		"fx/_base.js"
 	]
 
-})
+}
