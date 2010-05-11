@@ -53,15 +53,20 @@ function main(){
 			globals.modulesAdded[m] = true;
 		}
 	} else {
+//????????
+//console.log('files = ', files.join(" .... "));
 		for (var i=0, l=features.length, f; i<l; i++){
 			var moduleFiles = modules[features[i]].map(resolveDeps);
 			console.log("Adding module:", features[i], moduleFiles.length ? ("- " + moduleFiles.join(", ")) : "");
+//console.log('files = ', files.join(" .... "), files.length);
+//console.log('moduleFiles = ', moduleFiles.join(";;;"), moduleFiles.length);
 			files = files.concat(moduleFiles);
+//console.log('DANACH files = ', files.join(" .... "));
 		}
 	}
 	// Remove doubles but never the first occurence, since this would break the file order dependencies.
-	var files = files.map(function(item, index){ return (files.slice(0, index).indexOf(item)!=-1) ? null : item; })
-					.filter(function(item){ return item==null ? false : true });
+	var files = files.map(function(item, index){console.log(item, index); return (files.slice(0, index).indexOf(item)!=-1) ? null : item; })
+					//.filter(function(item){ return item==null ? false : true });
 							
 	print("\n\n");
 	print(files);

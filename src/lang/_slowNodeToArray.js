@@ -22,7 +22,6 @@ dojo._toArray = function(obj, offset, startWith){
 		return (startWith||[]).concat(Array.prototype.slice.call(obj, offset||0));
 	};
 
-	//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
 	var slow = function(obj, offset, startWith){
 		var arr = startWith||[];
 		for(var x = offset || 0; x < obj.length; x++){
@@ -30,14 +29,9 @@ dojo._toArray = function(obj, offset, startWith){
 		}
 		return arr;
 	};
-	//>>excludeEnd("webkitMobile");
 
-	dojo._toArray =
-		//>>excludeStart("webkitMobile", kwArgs.webkitMobile);
-		dojo.isIE ?  function(obj){
-			return ((obj.item) ? slow : efficient).apply(this, arguments);
-		} :
-		//>>excludeEnd("webkitMobile");
-		efficient;
+	dojo._toArray = function(obj){
+		return ((obj.item) ? slow : efficient).apply(this, arguments);
+	};
 
 })();
